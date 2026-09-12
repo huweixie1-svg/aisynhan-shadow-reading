@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1课课前准备｜苏蕾 - AISYNHAN</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      background-color: #f5f7fa;
+      padding: 2rem 1rem;
+      line-height: 1.75;
+    }
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .logo-wrapper {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e2e2;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .info-block {
+      background-color: #f7f9fa;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1.25rem 0;
+    }
+    ul {
+      padding-left: 1.4rem;
+      margin: 0.5rem 0;
+    }
+    textarea {
+      width: 100%;
+      min-height: 190px;
+      margin-top: 0.6rem;
+      padding: 0.875rem;
+      border: 1px solid #cccccc;
+      border-radius: 8px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    button {
+      padding: 0.55rem 1.1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .btn-save {
+      background-color: #2563eb;
+      color: #ffffff;
+    }
+    .btn-save:hover {
+      background-color: #1d4ed8;
+    }
+    .btn-copy {
+      background-color: #38a169;
+      color: #fff;
+      margin-left: 10px;
+    }
+    .btn-copy:hover {
+      background-color: #2f855a;
+    }
+    .tip-text {
+      font-size: 13px;
+      color: #333333;
+      margin-left: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-wrapper">
+      <svg width="340" height="72" viewBox="0 0 340 72">
+        <text x="0" y="48" font-size="44" font-weight="700" fill="#000000">AI</text>
+        <text x="78" y="48" font-size="44" font-weight="600" fill="#b46b2e">SYN</text>
+        <text x="192" y="48" font-size="44" font-weight="700" fill="#000000">HAN</text>
+        <rect x="302" y="22" width="28" height="28" fill="#c82423"/>
+        <text x="308" y="41" font-size="20" fill="#ffffff">汉</text>
+        <path d="M82 12 C105 4, 122 62,144 54" stroke="#b46b2e" stroke-width="2" fill="none" opacity="0.6"/>
+      </svg>
+    </div>
+
+    <div class="card">
+      <h3>📚 第1课课前准备｜AISYNHAN</h3>
+      <div class="info-block">
+        <p><strong>什么是 AISYNHAN？</strong></p>
+        <p>AISYNHAN 是AI驱动的对外汉语学习平台。名字里 <em>Syn</em> 代表协调、联结，呼应古代丝绸之路；<em>Han</em>取自汉字"汉"。平台就像新时代的数字丝路，把海外汉语学习者和中文学习资源连接在一起。</p>
+        <p style="margin-top:0.75rem;"><strong>它可以怎样帮助你学习汉语：</strong></p>
+        <ul>
+          <li>AI辅助练习口语、词汇、句型，随时练习不用等待老师</li>
+          <li>贴合你的水平定制练习，循序渐进提升中文能力</li>
+          <li>课前、课后记录你的学习目标、想法，方便复盘自己的进步</li>
+          <li>模拟真实场景，帮助你学会实用的日常汉语</li>
+        </ul>
+      </div>
+
+      <div>
+        <label style="font-weight:bold;font-size:16px;">✍️ 我的课前自述（苏蕾，请在这里写下你的想法）</label>
+        <textarea id="selfIntro" placeholder="你可以写下：学习中文的目标、目前汉语水平、你感兴趣的话题、你希望第1课学会什么、你的顾虑或者期待……">你好，我是苏蕾。
+我学习汉语的目标：
+
+我现在的汉语水平：
+
+第1课我希望学会：
+
+我感兴趣的话题：
+
+其他想法与期待：</textarea>
+        <div style="margin-top:14px;display:flex;align-items:center;flex-wrap:wrap;">
+          <button id="saveBtn" class="btn-save">保存我的自述</button>
+          <button id="copyBtn" class="btn-copy">📋复制文本发给老师</button>
+          <span id="tipMsg" class="tip-text"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const textareaEl = document.getElementById('selfIntro');
+  const saveButton = document.getElementById('saveBtn');
+  const copyButton = document.getElementById('copyBtn');
+  const tipMsg = document.getElementById('tipMsg');
+  const STORAGE_KEY = 'pre-lesson-01_sulei_intro';
+
+  if(localStorage.getItem(STORAGE_KEY)){
+    textareaEl.value = localStorage.getItem(STORAGE_KEY);
+  }
+
+  saveButton.addEventListener('click', ()=>{
+    localStorage.setItem(STORAGE_KEY, textareaEl.value);
+    tipMsg.textContent = '✅已保存到浏览器本地';
+    setTimeout(()=>{tipMsg.textContent = '';}, 2200);
+  })
+
+  copyButton.addEventListener('click', async ()=>{
+    try{
+      await navigator.clipboard.writeText(textareaEl.value);
+      tipMsg.textContent = '📋复制成功！粘贴发送给老师';
+    }catch(err){
+      tipMsg.textContent = '复制失败，请手动全选复制文字';
+    }
+    setTimeout(()=>{tipMsg.textContent = '';},2500);
+  })
+</script>
+</body>
+</html>
