@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AISynHan · Shadow Reading Practice</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --bg:#FAF7F2;
+    --ink:#2B2B2B;
+    --accent:#9C5C38;
+    --accent-dark:#7C4627;
+    --muted:#6E645A;
+    --line:#E5DED2;
+    --card:#FFFFFF;
+    --record:#B23A2E;
+    --warn-bg:#F6EBDD;
+    --warn-line:#E3C9A8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    line-height:1.6;
+    padding:28px 16px 64px;
+  }
+  .wrap{max-width:860px;margin:0 auto;}
+
+  header{text-align:center;margin-bottom:22px;}
+  .eyebrow{font-size:13px;letter-spacing:.14em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:6px;}
+  h1{font-size:30px;font-weight:700;line-height:1.3;}
+  .sub{color:var(--muted);font-size:14px;margin-top:4px;}
+
+  .notice{
+    background:var(--warn-bg);
+    border:1px solid var(--warn-line);
+    border-radius:10px;
+    padding:12px 16px;
+    font-size:14px;
+    color:#6B4E2E;
+    margin-bottom:30px;
+  }
+
+  section{margin-bottom:38px;}
+  h2{
+    font-size:20px;
+    font-weight:700;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:6px;
+  }
+  h2 .tag{font-size:12px;font-weight:500;color:var(--muted);}
+  .lead{color:var(--muted);font-size:14px;margin-bottom:18px;max-width:640px;}
+
+  /* tone grid */
+  .tone-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .tone-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 12px 14px;text-align:center;}
+  .tone-badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:24px;height:24px;border-radius:50%;
+    background:var(--accent);color:#fff;font-size:13px;font-weight:700;
+    margin-bottom:8px;
+  }
+  .tone-syl{font-size:34px;font-weight:700;line-height:1.2;}
+  .tone-name{font-size:13px;font-weight:500;margin-top:2px;}
+  .tone-desc{font-size:12px;color:var(--muted);margin-top:2px;}
+
+  /* word cards */
+  .word-list{display:flex;flex-direction:column;gap:14px;}
+  .word-card{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px;
+    display:flex;align-items:center;gap:18px;
+  }
+  .word-main{flex:0 0 auto;min-width:150px;}
+  .word-cn{font-size:32px;font-weight:700;line-height:1.25;}
+  .word-py{font-size:17px;font-weight:500;color:var(--accent);margin-top:2px;}
+  .word-en{font-size:13px;color:var(--muted);margin-top:2px;}
+
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto;justify-content:flex-end;}
+  button{
+    font-family:inherit;font-size:14px;font-weight:500;
+    border:1px solid var(--line);background:#fff;color:var(--ink);
+    border-radius:999px;padding:8px 14px;cursor:pointer;
+    transition:background .15s ease,border-color .15s ease,opacity .15s ease;
+    min-height:40px;
+  }
+  button:hover:not(:disabled){border-color:var(--accent);}
+  button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  button:disabled{opacity:.38;cursor:not-allowed;}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  button.primary:hover:not(:disabled){background:var(--accent-dark);border-color:var(--accent-dark);}
+  button.record-on{background:var(--record);border-color:var(--record);color:#fff;}
+  .timer{font-variant-numeric:tabular-nums;font-size:13px;color:var(--muted);align-self:center;min-width:38px;text-align:center;}
+
+  /* how-to */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .step-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-size:13px;font-weight:700;margin-bottom:8px;}
+  .step b{display:block;font-size:15px;margin-bottom:4px;}
+  .step p{font-size:13px;color:var(--muted);}
+  .tip{font-size:13px;color:var(--muted);margin-top:14px;}
+
+  footer{margin-top:44px;text-align:center;color:var(--muted);font-size:12px;}
+
+  /* toast */
+  #toast{
+    position:fixed;left:50%;bottom:28px;transform:translateX(-50%);
+    background:var(--ink);color:#fff;font-size:14px;
+    padding:10px 18px;border-radius:999px;
+    opacity:0;pointer-events:none;transition:opacity .25s ease;
+    max-width:88vw;text-align:center;z-index:10;
+  }
+  #toast.show{opacity:1;}
+
+  @media (max-width:760px){
+    h1{font-size:25px;}
+    .tone-grid{grid-template-columns:repeat(2,1fr);}
+    .word-card{flex-direction:column;align-items:flex-start;gap:12px;}
+    .word-main{min-width:0;}
+    .actions{margin-left:0;width:100%;}
+    button{flex:1 1 auto;}
+    .steps{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">AISynHan · Chinese Class</div>
+    <h1>Shadow Reading Practice</h1>
+    <div class="sub">跟读练习 · 听标准发音，自己跟读，录下来对比</div>
+  </header>
+
+  <div class="notice">
+    <b>Sample lesson.</b> These words are examples of what a lesson looks like after your self-introduction is added.
+    Once your teacher has your story, every word here will come from your own life — your name, your city, your family, your hobbies.
+  </div>
+
+  <!-- ===== Section 1 · The Four Tones ===== -->
+  <section id="tones">
+    <h2>1 · The Four Tones <span class="tag">四声</span></h2>
+    <p class="lead">In Chinese, the tone of a syllable changes its meaning. Listen to each tone, record yourself, and compare until yours sounds natural.</p>
+    <div class="tone-grid" id="toneGrid"></div>
+  </section>
+
+  <!-- ===== Section 2 · Today's Words ===== -->
+  <section id="words">
+    <h2>2 · Today's Words <span class="tag">本课词语</span></h2>
+    <p class="lead">Words from your story. Listen, then repeat out loud and record yourself.</p>
+    <div class="word-list" id="wordList"></div>
+  </section>
+
+  <!-- ===== Section 3 · How to practice ===== -->
+  <section id="howto">
+    <h2>3 · How to Practice <span class="tag">怎么练</span></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <b>Listen</b>
+        <p>Tap Listen and hear the standard pronunciation.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <b>Record yourself</b>
+        <p>Tap Record, speak after the audio, then tap Stop.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <b>Compare &amp; repeat</b>
+        <p>Tap Compare to hear the standard version, then your voice. Repeat until they match. Save your best recording and send it to your teacher.</p>
+      </div>
+    </div>
+    <p class="tip">On iPhone: if sound or recording does not work inside a chat app, open this page in Safari instead. Allow microphone access when asked.</p>
+  </section>
+
+  <footer>AISynHan · 课前准备 · 跟读练习</footer>
+</div>
+
+<div id="toast" role="status"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     CONTENT — 老师修改处：学生自述提交后，把下面数组换成
+     从学生自述提炼的词句即可（cn=汉字，py=拼音，en=英文，audio=示范音频）。
+     每个 audio 可留空字符串 ""，页面会自动用浏览器朗读代替。
+     ============================================================ */
+
+  var TONES = [
+    { n:1, syl:"mā", tts:"妈", name:"1st tone · 一声", desc:"high & level" },
+    { n:2, syl:"má", tts:"麻", name:"2nd tone · 二声", desc:"rising" },
+    { n:3, syl:"mǎ", tts:"马", name:"3rd tone · 三声", desc:"falling, then rising" },
+    { n:4, syl:"mà", tts:"骂", name:"4th tone · 四声", desc:"falling sharply" }
+  ];
+
+  var ITEMS = [
+    { cn:"你好",        py:"nǐ hǎo",              en:"Hello",           audio:"https://aka.doubaocdn.com/s/aYkzI5CkOY" },
+    { cn:"我叫……",      py:"wǒ jiào …",           en:"My name is …",    audio:"https://aka.doubaocdn.com/s/NnVvImWX1U" },
+    { cn:"我来自伊朗。", py:"wǒ láizì Yīláng.",   en:"I am from Iran.", audio:"https://aka.doubaocdn.com/s/3AKsfazfhR" },
+    { cn:"我喜欢音乐。", py:"wǒ xǐhuan yīnyuè.",  en:"I like music.",   audio:"https://aka.doubaocdn.com/s/skvCt59iG9" }
+  ];
+
+  var TONE_AUDIO = [
+    "https://aka.doubaocdn.com/s/zu9eH84r6e",
+    "https://aka.doubaocdn.com/s/ValnSdtYmT",
+    "https://aka.doubaocdn.com/s/KSwZOHrbUB",
+    "https://aka.doubaocdn.com/s/Xk9DF2tTVV"
+  ];
+
+  /* ---------- helpers ---------- */
+
+  var toastTimer = null;
+  function toast(msg){
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.classList.remove("show"); }, 3600);
+  }
+
+  function hasSpeech(){
+    return "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+  }
+  function speak(text, rate, onEnd){
+    if(!hasSpeech()){ return false; }
+    speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = "zh-CN";
+    u.rate = rate || 0.9;
+    if(onEnd){ u.onend = onEnd; }
+    speechSynthesis.speak(u);
+    return true;
+  }
+
+  var activeAudio = null;
+  function stopOthers(except){
+    if(activeAudio && activeAudio !== except){
+      activeAudio.pause();
+      activeAudio.currentTime = 0;
+    }
+    activeAudio = except || null;
+  }
+
+  /* ---------- card state ---------- */
+
+  function makeCard(type, index, ttsText){
+    return {
+      type: type,
+      index: index,
+      ttsText: ttsText,
+      audioEl: new Audio(),
+      stream: null,
+      rec: null,
+      chunks: [],
+      myUrl: null,
+      has: false,
+      recording: false,
+      secs: 0,
+      timer: null,
+      ui: null
+    };
+  }
+
+  function extFor(mime){
+    if(!mime){ return "webm"; }
+    if(mime.indexOf("mp4") !== -1){ return "m4a"; }
+    if(mime.indexOf("ogg") !== -1){ return "ogg"; }
+    return "webm";
+  }
+
+  /* ---------- actions ---------- */
+
+  function playStandard(card){
+    stopOthers(card.audioEl);
+    var a = card.audioEl;
+    a.pause(); a.currentTime = 0;
+    var used = false;
+    function fallback(){ if(used){ return; } used = true; speak(card.ttsText, 0.9); }
+    a.onerror = fallback;
+    a.play().catch(fallback);
+  }
+
+  function playMine(card){
+    if(!card.myUrl){ return; }
+    stopOthers(null);
+    var m = new Audio(card.myUrl);
+    m.play().catch(function(){ toast("Could not play your recording."); });
+  }
+
+  function compare(card){
+    if(!card.has){ return; }
+    stopOthers(card.audioEl);
+    var a = card.audioEl;
+    a.pause(); a.currentTime = 0;
+    var used = false;
+    function mine(){ if(used){ return; } used = true; playMine(card); }
+    a.onended = mine;
+    a.onerror = function(){
+      if(used){ return; }
+      used = true;
+      if(!speak(card.ttsText, 0.9, mine)){ mine(); }
+    };
+    a.play().catch(function(){
+      if(used){ return; }
+      used = true;
+      if(!speak(card.ttsText, 0.9, mine)){ mine(); }
+    });
+  }
+
+  function saveMine(card){
+    if(!card.myUrl){ return; }
+    var ext = extFor(card.rec ? card.rec.mimeType : "");
+    var a = document.createElement("a");
+    a.href = card.myUrl;
+    a.download = (card.type === "tone" ? "tone-" : "word-") + (card.index + 1) + "." + ext;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    toast("Saved. Send this file to your teacher.");
+  }
+
+  function toggleRec(card){
+    if(card.recording){ stopRec(card); return; }
+    ALL.forEach(function(c){ if(c !== card && c.recording){ stopRec(c); } });
+
+    if(!card.stream){
+      if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+        toast("This browser does not support recording. Try Chrome or Safari.");
+        return;
+      }
+      navigator.mediaDevices.getUserMedia({ audio:true }).then(function(stream){
+        card.stream = stream;
+        startRec(card);
+      }).catch(function(){
+        toast("Microphone is blocked. Allow microphone access, then try again.");
+      });
+      return;
+    }
+    startRec(card);
+  }
+
+  function startRec(card){
+    var types = ["audio/webm;codecs=opus", "audio/mp4", "audio/webm", "audio/ogg"];
+    var mime = null;
+    for(var i = 0; i < types.length; i++){
+      if(MediaRecorder.isTypeSupported(types[i])){ mime = types[i]; break; }
+    }
+    card.rec = new MediaRecorder(card.stream, mime ? { mimeType: mime } : undefined);
+    card.chunks = [];
+    card.rec.ondataavailable = function(e){ if(e.data && e.data.size){ card.chunks.push(e.data); } };
+    card.rec.onstop = function(){
+      var blob = new Blob(card.chunks, { type: card.rec.mimeType || "audio/webm" });
+      if(card.myUrl){ URL.revokeObjectURL(card.myUrl); }
+      card.myUrl = URL.createObjectURL(blob);
+      card.has = true;
+      renderCard(card);
+    };
+    card.rec.start();
+    card.recording = true;
+    card.secs = 0;
+    card.timer = setInterval(function(){
+      card.secs++;
+      renderCard(card);
+    }, 1000);
+    renderCard(card);
+  }
+
+  function stopRec(card){
+    clearInterval(card.timer);
+    card.timer = null;
+    card.recording = false;
+    try{ card.rec.stop(); }catch(e){}
+    renderCard(card);
+  }
+
+  function fmt(secs){
+    var m = Math.floor(secs / 60);
+    var s = secs % 60;
+    return m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+  /* ---------- render ---------- */
+
+  function renderCard(card){
+    var ui = card.ui;
+    if(!ui){ return; }
+    ui.btnRec.textContent = card.recording ? "Stop" : "Record";
+    ui.btnRec.classList.toggle("record-on", card.recording);
+    ui.btnRec.setAttribute("aria-label", card.recording ? "Stop recording" : "Start recording");
+    ui.timer.textContent = card.recording ? fmt(card.secs) : (card.has ? fmt(card.secs) : "");
+    ui.btnReplay.disabled = !card.has;
+    ui.btnCompare.disabled = !card.has;
+    ui.btnSave.disabled = !card.has;
+  }
+
+  function buildTones(){
+    var grid = document.getElementById("toneGrid");
+    TONES.forEach(function(t, i){
+      var card = makeCard("tone", i, t.tts);
+      card.audioEl.src = TONE_AUDIO[i];
+
+      var el = document.createElement("div");
+      el.className = "tone-card";
+      el.innerHTML =
+        '<div class="tone-badge">' + t.n + '</div>' +
+        '<div class="tone-syl">' + t.syl + '</div>' +
+        '<div class="tone-name">' + t.name + '</div>' +
+        '<div class="tone-desc">' + t.desc + '</div>';
+
+      var acts = document.createElement("div");
+      acts.className = "actions";
+      acts.style.justifyContent = "center";
+      acts.style.marginLeft = "0";
+      acts.style.marginTop = "12px";
+      acts.innerHTML =
+        '<button data-act="listen">Listen</button>' +
+        '<button data-act="rec">Record</button>' +
+        '<button data-act="replay" disabled>Replay</button>' +
+        '<button data-act="compare" disabled>Compare</button>' +
+        '<button data-act="save" disabled>Save</button>';
+      el.appendChild(acts);
+
+      var timer = document.createElement("span");
+      timer.className = "timer";
+      timer.textContent = "";
+      el.appendChild(timer);
+
+      grid.appendChild(el);
+
+      card.ui = {
+        btnRec: acts.querySelector('[data-act="rec"]'),
+        btnReplay: acts.querySelector('[data-act="replay"]'),
+        btnCompare: acts.querySelector('[data-act="compare"]'),
+        btnSave: acts.querySelector('[data-act="save"]'),
+        timer: timer
+      };
+
+      acts.querySelector('[data-act="listen"]').addEventListener("click", function(){ playStandard(card); });
+      acts.querySelector('[data-act="rec"]').addEventListener("click", function(){ toggleRec(card); });
+      acts.querySelector('[data-act="replay"]').addEventListener("click", function(){ playMine(card); });
+      acts.querySelector('[data-act="compare"]').addEventListener("click", function(){ compare(card); });
+      acts.querySelector('[data-act="save"]').addEventListener("click", function(){ saveMine(card); });
+
+      ALL.push(card);
+      renderCard(card);
+    });
+  }
+
+  function buildWords(){
+    var list = document.getElementById("wordList");
+    ITEMS.forEach(function(it, i){
+      var card = makeCard("word", i, it.cn);
+      card.audioEl.src = it.audio;
+
+      var el = document.createElement("div");
+      el.className = "word-card";
+
+      var main = document.createElement("div");
+      main.className = "word-main";
+      main.innerHTML =
+        '<div class="word-cn">' + it.cn + '</div>' +
+        '<div class="word-py">' + it.py + '</div>' +
+        '<div class="word-en">' + it.en + '</div>';
+      el.appendChild(main);
+
+      var acts = document.createElement("div");
+      acts.className = "actions";
+      acts.innerHTML =
+        '<button data-act="listen" class="primary">Listen</button>' +
+        '<button data-act="rec">Record</button>' +
+        '<button data-act="replay" disabled>Replay</button>' +
+        '<button data-act="compare" disabled>Compare</button>' +
+        '<button data-act="save" disabled>Save</button>';
+      el.appendChild(acts);
+
+      var timer = document.createElement("span");
+      timer.className = "timer";
+      timer.textContent = "";
+      el.appendChild(timer);
+
+      list.appendChild(el);
+
+      card.ui = {
+        btnRec: acts.querySelector('[data-act="rec"]'),
+        btnReplay: acts.querySelector('[data-act="replay"]'),
+        btnCompare: acts.querySelector('[data-act="compare"]'),
+        btnSave: acts.querySelector('[data-act="save"]'),
+        timer: timer
+      };
+
+      acts.querySelector('[data-act="listen"]').addEventListener("click", function(){ playStandard(card); });
+      acts.querySelector('[data-act="rec"]').addEventListener("click", function(){ toggleRec(card); });
+      acts.querySelector('[data-act="replay"]').addEventListener("click", function(){ playMine(card); });
+      acts.querySelector('[data-act="compare"]').addEventListener("click", function(){ compare(card); });
+      acts.querySelector('[data-act="save"]').addEventListener("click", function(){ saveMine(card); });
+
+      ALL.push(card);
+      renderCard(card);
+    });
+  }
+
+  var ALL = [];
+  buildTones();
+  buildWords();
+})();
+</script>
+</body>
+</html>
