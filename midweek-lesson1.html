@@ -41,9 +41,6 @@
     table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 0.75rem 0; }
     th, td { border: 1px solid #e5e7eb; padding: 0.5rem 0.75rem; text-align: left; }
     th { background: #f3f4f6; }
-    .week-current { background: #dbeafe; font-weight: 600; }
-    .progress { background: #e5e7eb; border-radius: 8px; height: 10px; overflow: hidden; margin: 0.75rem 0; }
-    .progress-fill { background: #2563eb; height: 100%; width: 25%; border-radius: 8px; }
     .small { font-size: 0.8rem; color: #888; }
   </style>
 </head>
@@ -86,7 +83,7 @@
         <div class="en">Hello!</div>
       </div>
       <div class="controls">
-        <button class="btn btn-play" onclick="playAudio('https://aka.doubaocdn.com/s/ZqhHFCFigK')">▶ Listen</button>
+        <button class="btn btn-play" onclick="playAudio('你好！')">▶ Listen</button>
         <button class="btn btn-rec" id="rec1" onclick="toggleRec(1)">🎙 Record</button>
         <button class="btn btn-mine" id="mine1" onclick="playMine(1)" disabled>▶ My voice</button>
         <button class="btn btn-dl" id="dl1" onclick="downloadRec(1)" disabled>⬇ Save & send</button>
@@ -100,7 +97,7 @@
         <div class="en">My name is Soureh.</div>
       </div>
       <div class="controls">
-        <button class="btn btn-play" onclick="playAudio('https://aka.doubaocdn.com/s/pVy8i5LPVO')">▶ Listen</button>
+        <button class="btn btn-play" onclick="playAudio('我叫苏蕾。')">▶ Listen</button>
         <button class="btn btn-rec" id="rec2" onclick="toggleRec(2)">🎙 Record</button>
         <button class="btn btn-mine" id="mine2" onclick="playMine(2)" disabled>▶ My voice</button>
         <button class="btn btn-dl" id="dl2" onclick="downloadRec(2)" disabled>⬇ Save & send</button>
@@ -114,7 +111,7 @@
         <div class="en">Nice to meet you.</div>
       </div>
       <div class="controls">
-        <button class="btn btn-play" onclick="playAudio('https://aka.doubaocdn.com/s/aErQUWxQ4d')">▶ Listen</button>
+        <button class="btn btn-play" onclick="playAudio('很高兴认识你。')">▶ Listen</button>
         <button class="btn btn-rec" id="rec3" onclick="toggleRec(3)">🎙 Record</button>
         <button class="btn btn-mine" id="mine3" onclick="playMine(3)" disabled>▶ My voice</button>
         <button class="btn btn-dl" id="dl3" onclick="downloadRec(3)" disabled>⬇ Save & send</button>
@@ -128,7 +125,7 @@
         <div class="en">Thank you!</div>
       </div>
       <div class="controls">
-        <button class="btn btn-play" onclick="playAudio('https://aka.doubaocdn.com/s/LUQ2GVwYsd')">▶ Listen</button>
+        <button class="btn btn-play" onclick="playAudio('谢谢！')">▶ Listen</button>
         <button class="btn btn-rec" id="rec4" onclick="toggleRec(4)">🎙 Record</button>
         <button class="btn btn-mine" id="mine4" onclick="playMine(4)" disabled>▶ My voice</button>
         <button class="btn btn-dl" id="dl4" onclick="downloadRec(4)" disabled>⬇ Save & send</button>
@@ -142,7 +139,7 @@
         <div class="en">Goodbye!</div>
       </div>
       <div class="controls">
-        <button class="btn btn-play" onclick="playAudio('https://aka.doubaocdn.com/s/0dlJQ0fLdK')">▶ Listen</button>
+        <button class="btn btn-play" onclick="playAudio('再见！')">▶ Listen</button>
         <button class="btn btn-rec" id="rec5" onclick="toggleRec(5)">🎙 Record</button>
         <button class="btn btn-mine" id="mine5" onclick="playMine(5)" disabled>▶ My voice</button>
         <button class="btn btn-dl" id="dl5" onclick="downloadRec(5)" disabled>⬇ Save & send</button>
@@ -193,21 +190,6 @@
     </table>
   </div>
 
-  <!-- 4-week plan -->
-  <div class="card">
-    <h2>🗺️ Your 4-Week Pinyin Journey</h2>
-    <div class="progress"><div class="progress-fill"></div></div>
-    <p class="small">Week 1 of 4 — you are here</p>
-    <table>
-      <tr><th>Week</th><th>Focus</th><th>Sentences</th></tr>
-      <tr class="week-current"><td>1 ✅</td><td>Tones + 3rd-tone change · initials j, x, z, r, n, l, h</td><td>Greetings & self-intro</td></tr>
-      <tr><td>2</td><td>Aspiration: b/p, d/t, g/k · compound finals</td><td>Daily life</td></tr>
-      <tr><td>3</td><td>Flat vs retroflex: z c s / zh ch sh · ü family</td><td>Feelings & opinions</td></tr>
-      <tr><td>4</td><td>Full review · "yī/bù" changes · natural speech</td><td>Free conversation</td></tr>
-    </table>
-    <p class="small">After 4 weeks, all 23 initials, 24 finals and 4 tones + neutral tone will be covered. 🎯</p>
-  </div>
-
   <!-- Instructions -->
   <div class="card">
     <h2>📤 How to send your recordings</h2>
@@ -222,13 +204,33 @@
 </div>
 
 <script>
-// ---------- Audio player ----------
-function playAudio(url){
-  const a = new Audio(url);
-  a.play();
+// ========== Listen: browser built-in Chinese voice ==========
+let zhVoice = null;
+
+function loadVoice(){
+  const voices = window.speechSynthesis.getVoices();
+  zhVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('zh')) || null;
+}
+if('speechSynthesis' in window){
+  loadVoice();
+  window.speechSynthesis.onvoiceschanged = loadVoice;
 }
 
-// ---------- Recording ----------
+function playAudio(text){
+  if(!('speechSynthesis' in window)){
+    alert('Your browser does not support speech. Please use Chrome or Edge.');
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.65;
+  u.pitch = 1;
+  if(zhVoice) u.voice = zhVoice;
+  window.speechSynthesis.speak(u);
+}
+
+// ========== Recording ==========
 const recState = {};
 let activeRec = null;
 
@@ -299,7 +301,7 @@ function setStatus(n, msg){
   document.getElementById('status' + n).textContent = msg;
 }
 
-// ---------- Save recordings (IndexedDB) ----------
+// ========== Save recordings (IndexedDB) ==========
 function saveRec(n, blob){
   const req = indexedDB.open('AISynHanRec', 1);
   req.onupgradeneeded = e => {
