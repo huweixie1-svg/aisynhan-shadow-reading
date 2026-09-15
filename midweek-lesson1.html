@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1 Mid-Week Practice | AISYNHAN</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #f5f7fa; padding: 2rem 1rem; line-height: 1.7; color: #1a1a1a; }
+    .container { max-width: 760px; margin: 0 auto; }
+    .logo-wrapper { text-align: center; margin-bottom: 1.5rem; }
+    .card { background: #fff; border: 1px solid #e2e2e2; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; }
+    .card h2 { font-size: 1.25rem; margin-bottom: 0.75rem; }
+    .subtitle { color: #555; font-size: 0.95rem; margin-bottom: 0.5rem; }
+    .steps { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+    .step { background: #eef2ff; color: #2563eb; border-radius: 8px; padding: 0.5rem 0.75rem; font-size: 0.85rem; font-weight: 600; }
+    .sentence { border: 1px solid #e8e8e8; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; background: #fafbfc; }
+    .sentence-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+    .cn { font-size: 1.6rem; font-weight: 700; }
+    .py { color: #b46b2e; font-weight: 600; font-size: 1.05rem; }
+    .en { color: #777; font-size: 0.9rem; }
+    .controls { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; align-items: center; }
+    .btn { padding: 0.55rem 1rem; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: background-color 0.2s; }
+    .btn-play { background: #2563eb; color: #fff; }
+    .btn-play:hover { background: #1d4ed8; }
+    .btn-rec { background: #dc2626; color: #fff; }
+    .btn-rec:hover { background: #b91c1c; }
+    .btn-rec.recording { background: #7f1d1d; animation: pulse 1s infinite; }
+    .btn-mine { background: #38a169; color: #fff; }
+    .btn-mine:hover { background: #2f855a; }
+    .btn-dl { background: #e5e7eb; color: #374151; }
+    .btn-dl:hover { background: #d1d5db; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .rec-status { font-size: 0.8rem; color: #888; }
+    .tone-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.75rem 0; }
+    .tone-cell { background: #f3f4f6; border-radius: 8px; padding: 0.5rem 0.75rem; text-align: center; min-width: 70px; }
+    .tone-cell .char { font-size: 1.3rem; font-weight: 700; }
+    .tone-cell .label { font-size: 0.75rem; color: #888; }
+    .note { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; font-size: 0.9rem; margin: 0.75rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 0.75rem 0; }
+    th, td { border: 1px solid #e5e7eb; padding: 0.5rem 0.75rem; text-align: left; }
+    th { background: #f3f4f6; }
+    .week-current { background: #dbeafe; font-weight: 600; }
+    .progress { background: #e5e7eb; border-radius: 8px; height: 10px; overflow: hidden; margin: 0.75rem 0; }
+    .progress-fill { background: #2563eb; height: 100%; width: 25%; border-radius: 8px; }
+    .small { font-size: 0.8rem; color: #888; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- Logo -->
+  <div class="logo-wrapper">
+    <svg width="300" height="64" viewBox="0 0 340 72">
+      <text x="0" y="48" font-size="44" font-weight="700" fill="#000000">AI</text>
+      <text x="78" y="48" font-size="44" font-weight="600" fill="#b46b2e">SYN</text>
+      <text x="192" y="48" font-size="44" font-weight="700" fill="#000000">HAN</text>
+      <rect x="302" y="22" width="28" height="28" fill="#c82423"/>
+      <text x="308" y="41" font-size="20" fill="#ffffff">汉</text>
+      <path d="M82 12 C105 4, 122 62,144 54" stroke="#b46b2e" stroke-width="2" fill="none" opacity="0.6"/>
+    </svg>
+  </div>
+
+  <!-- Header -->
+  <div class="card" style="text-align:center;">
+    <h2>📚 Lesson 1 · Mid-Week Practice</h2>
+    <p class="subtitle">Hi Soureh! This week we practice <strong>greetings</strong> and <strong>self-introduction</strong>.</p>
+    <div class="steps" style="justify-content:center;">
+      <span class="step">1️⃣ Listen</span>
+      <span class="step">2️⃣ Repeat aloud</span>
+      <span class="step">3️⃣ Record</span>
+      <span class="step">4️⃣ Save</span>
+      <span class="step">5️⃣ Send to teacher</span>
+    </div>
+    <p class="small">Each sentence: listen 3 times → repeat aloud 3 times → record yourself → save → download your best recording and send it on WhatsApp.</p>
+  </div>
+
+  <!-- Sentences -->
+  <div class="card">
+    <h2>🗣️ Practice Sentences</h2>
+    <p class="subtitle">From your goals: Greetings · Meeting new people · Daily conversations</p>
+
+    <div class="sentence">
+      <div class="sentence-top">
+        <div><div class="cn">你好！</div><div class="py">Nǐ hǎo!</div></div>
+        <div class="en">Hello!</div>
+      </div>
+      <div class="controls">
+        <button class="btn btn-play" onclick="playAudio('https://aka.doubaocdn.com/s/ZqhHFCFigK')">▶ Listen</button>
+        <button class="btn btn-rec" id="rec1" onclick="toggleRec(1)">🎙 Record</button>
+        <button class="btn btn-mine" id="mine1" onclick="playMine(1)" disabled>▶ My voice</button>
+        <button class="btn btn-dl" id="dl1" onclick="downloadRec(1)" disabled>⬇ Save & send</button>
+        <span class="rec-status" id="status1"></span>
+      </div>
+    </div>
+
+    <div class="sentence">
+      <div class="sentence-top">
+        <div><div class="cn">我叫苏蕾。</div><div class="py">Wǒ jiào Sūlěi.</div></div>
+        <div class="en">My name is Soureh.</div>
+      </div>
+      <div class="controls">
+        <button class="btn btn-play" onclick="playAudio('https://aka.doubaocdn.com/s/pVy8i5LPVO')">▶ Listen</button>
+        <button class="btn btn-rec" id="rec2" onclick="toggleRec(2)">🎙 Record</button>
+        <button class="btn btn-mine" id="mine2" onclick="playMine(2)" disabled>▶ My voice</button>
+        <button class="btn btn-dl" id="dl2" onclick="downloadRec(2)" disabled>⬇ Save & send</button>
+        <span class="rec-status" id="status2"></span>
+      </div>
+    </div>
+
+    <div class="sentence">
+      <div class="sentence-top">
+        <div><div class="cn">很高兴认识你。</div><div class="py">Hěn gāoxìng rènshi nǐ.</div></div>
+        <div class="en">Nice to meet you.</div>
+      </div>
+      <div class="controls">
+        <button class="btn btn-play" onclick="playAudio('https://aka.doubaocdn.com/s/aErQUWxQ4d')">▶ Listen</button>
+        <button class="btn btn-rec" id="rec3" onclick="toggleRec(3)">🎙 Record</button>
+        <button class="btn btn-mine" id="mine3" onclick="playMine(3)" disabled>▶ My voice</button>
+        <button class="btn btn-dl" id="dl3" onclick="downloadRec(3)" disabled>⬇ Save & send</button>
+        <span class="rec-status" id="status3"></span>
+      </div>
+    </div>
+
+    <div class="sentence">
+      <div class="sentence-top">
+        <div><div class="cn">谢谢！</div><div class="py">Xièxie!</div></div>
+        <div class="en">Thank you!</div>
+      </div>
+      <div class="controls">
+        <button class="btn btn-play" onclick="playAudio('https://aka.doubaocdn.com/s/LUQ2GVwYsd')">▶ Listen</button>
+        <button class="btn btn-rec" id="rec4" onclick="toggleRec(4)">🎙 Record</button>
+        <button class="btn btn-mine" id="mine4" onclick="playMine(4)" disabled>▶ My voice</button>
+        <button class="btn btn-dl" id="dl4" onclick="downloadRec(4)" disabled>⬇ Save & send</button>
+        <span class="rec-status" id="status4"></span>
+      </div>
+    </div>
+
+    <div class="sentence">
+      <div class="sentence-top">
+        <div><div class="cn">再见！</div><div class="py">Zàijiàn!</div></div>
+        <div class="en">Goodbye!</div>
+      </div>
+      <div class="controls">
+        <button class="btn btn-play" onclick="playAudio('https://aka.doubaocdn.com/s/0dlJQ0fLdK')">▶ Listen</button>
+        <button class="btn btn-rec" id="rec5" onclick="toggleRec(5)">🎙 Record</button>
+        <button class="btn btn-mine" id="mine5" onclick="playMine(5)" disabled>▶ My voice</button>
+        <button class="btn btn-dl" id="dl5" onclick="downloadRec(5)" disabled>⬇ Save & send</button>
+        <span class="rec-status" id="status5"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pinyin Focus -->
+  <div class="card">
+    <h2>🔤 Pinyin Focus · This Week</h2>
+
+    <h3 style="font-size:1rem;margin:0.75rem 0 0.25rem;">1. The 4 Tones + Neutral Tone</h3>
+    <div class="tone-row">
+      <div class="tone-cell"><div class="char">mā</div><div class="label">妈 · 1st</div></div>
+      <div class="tone-cell"><div class="char">má</div><div class="label">麻 · 2nd</div></div>
+      <div class="tone-cell"><div class="char">mǎ</div><div class="label">马 · 3rd</div></div>
+      <div class="tone-cell"><div class="char">mà</div><div class="label">骂 · 4th</div></div>
+      <div class="tone-cell"><div class="char">ma</div><div class="label">吗 · neutral</div></div>
+    </div>
+    <p class="small">1st = high & flat · 2nd = rising · 3rd = dip (down then up) · 4th = falling · neutral = light & short</p>
+
+    <div class="note">
+      ⚡ <strong>3rd-tone change:</strong> When two 3rd tones meet, the first one becomes a 2nd tone.<br>
+      <strong>nǐ + hǎo → ní hǎo</strong>  (你好 sounds like <em>ní hǎo</em>, not nǐ hǎo!)
+    </div>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.25rem;">2. Sounds in this week's sentences</h3>
+    <table>
+      <tr><th>Sound</th><th>In these words</th><th>Tip for Persian speakers</th></tr>
+      <tr><td><strong>j</strong></td><td>jiào 叫, jiàn 见</td><td>Like "jeep" but lighter, not voiced</td></tr>
+      <tr><td><strong>x</strong></td><td>xiè 谢, gāoxìng 高兴</td><td>Same position as j, but air flows through</td></tr>
+      <tr><td><strong>z</strong></td><td>zài 再</td><td>Like "dz" — tongue flat behind teeth</td></tr>
+      <tr><td><strong>r</strong></td><td>rèn 认</td><td>Retroflex r — curl the tongue tip up</td></tr>
+      <tr><td><strong>n / l</strong></td><td>nǐ 你 / lěi 蕾</td><td>n = nose sound · l = tongue tip on gum ridge</td></tr>
+      <tr><td><strong>h</strong></td><td>hǎo 好, hěn 很</td><td>Like English "h", a bit stronger</td></tr>
+    </table>
+
+    <h3 style="font-size:1rem;margin:1rem 0 0.25rem;">3. Finals in this week's sentences</h3>
+    <table>
+      <tr><th>Final</th><th>Word</th><th>Approximate sound</th></tr>
+      <tr><td>ao</td><td>hǎo 好</td><td>"ow" — round and open</td></tr>
+      <tr><td>iao</td><td>jiào 叫</td><td>"ee-yow"</td></tr>
+      <tr><td>ai</td><td>zài 再</td><td>"eye"</td></tr>
+      <tr><td>ie</td><td>xiè 谢</td><td>"ee-eh"</td></tr>
+      <tr><td>ei</td><td>lěi 蕾</td><td>"ay"</td></tr>
+      <tr><td>en</td><td>hěn 很</td><td>"un" (mouth relaxed)</td></tr>
+    </table>
+  </div>
+
+  <!-- 4-week plan -->
+  <div class="card">
+    <h2>🗺️ Your 4-Week Pinyin Journey</h2>
+    <div class="progress"><div class="progress-fill"></div></div>
+    <p class="small">Week 1 of 4 — you are here</p>
+    <table>
+      <tr><th>Week</th><th>Focus</th><th>Sentences</th></tr>
+      <tr class="week-current"><td>1 ✅</td><td>Tones + 3rd-tone change · initials j, x, z, r, n, l, h</td><td>Greetings & self-intro</td></tr>
+      <tr><td>2</td><td>Aspiration: b/p, d/t, g/k · compound finals</td><td>Daily life</td></tr>
+      <tr><td>3</td><td>Flat vs retroflex: z c s / zh ch sh · ü family</td><td>Feelings & opinions</td></tr>
+      <tr><td>4</td><td>Full review · "yī/bù" changes · natural speech</td><td>Free conversation</td></tr>
+    </table>
+    <p class="small">After 4 weeks, all 23 initials, 24 finals and 4 tones + neutral tone will be covered. 🎯</p>
+  </div>
+
+  <!-- Instructions -->
+  <div class="card">
+    <h2>📤 How to send your recordings</h2>
+    <ol style="padding-left:1.2rem;color:#444;">
+      <li>Record each sentence (or just your best ones)</li>
+      <li>Tap <strong>"⬇ Save & send"</strong> — the file downloads to your phone/computer</li>
+      <li>Open <strong>WhatsApp</strong>, open the chat with your teacher</li>
+      <li>Attach the downloaded file and send it</li>
+    </ol>
+    <p class="small" style="margin-top:0.5rem;">💾 Your recordings are also saved on this device, so you can listen again later.</p>
+  </div>
+</div>
+
+<script>
+// ---------- Audio player ----------
+function playAudio(url){
+  const a = new Audio(url);
+  a.play();
+}
+
+// ---------- Recording ----------
+const recState = {};
+let activeRec = null;
+
+async function toggleRec(n){
+  if(activeRec === n){
+    stopRec(n);
+    return;
+  }
+  if(activeRec !== null && activeRec !== undefined){
+    stopRec(activeRec);
+  }
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    const recorder = new MediaRecorder(stream);
+    const chunks = [];
+    recorder.ondataavailable = e => { if(e.data.size > 0) chunks.push(e.data); };
+    recorder.onstop = () => {
+      const blob = new Blob(chunks, {type: recorder.mimeType || 'audio/webm'});
+      const url = URL.createObjectURL(blob);
+      recState[n] = {blob, url};
+      saveRec(n, blob);
+      document.getElementById('mine' + n).disabled = false;
+      document.getElementById('dl' + n).disabled = false;
+      setStatus(n, '✅ Recorded & saved');
+      stream.getTracks().forEach(t => t.stop());
+    };
+    recorder.start();
+    recState[n] = {...(recState[n]||{}), recorder};
+    activeRec = n;
+    const btn = document.getElementById('rec' + n);
+    btn.textContent = '⏹ Stop';
+    btn.classList.add('recording');
+    setStatus(n, '🔴 Recording…');
+  }catch(err){
+    setStatus(n, '⚠️ Mic blocked — allow microphone access');
+  }
+}
+
+function stopRec(n){
+  const st = recState[n];
+  if(st && st.recorder && st.recorder.state !== 'inactive'){
+    st.recorder.stop();
+  }
+  const btn = document.getElementById('rec' + n);
+  btn.textContent = '🎙 Record';
+  btn.classList.remove('recording');
+  activeRec = null;
+}
+
+function playMine(n){
+  const st = recState[n];
+  if(st && st.url) new Audio(st.url).play();
+}
+
+function downloadRec(n){
+  const st = recState[n];
+  if(!st || !st.blob) return;
+  const a = document.createElement('a');
+  a.href = st.url;
+  a.download = 'aisynhan-lesson1-sentence' + n + '.webm';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setStatus(n, '⬇ Downloaded — now send it on WhatsApp!');
+}
+
+function setStatus(n, msg){
+  document.getElementById('status' + n).textContent = msg;
+}
+
+// ---------- Save recordings (IndexedDB) ----------
+function saveRec(n, blob){
+  const req = indexedDB.open('AISynHanRec', 1);
+  req.onupgradeneeded = e => {
+    const db = e.target.result;
+    if(!db.objectStoreNames.contains('recordings')) db.createObjectStore('recordings');
+  };
+  req.onsuccess = e => {
+    const db = e.target.result;
+    const tx = db.transaction('recordings','readwrite');
+    tx.objectStore('recordings').put(blob, 'sentence' + n);
+  };
+}
+
+// Load saved recordings on page open
+(function loadSaved(){
+  const req = indexedDB.open('AISynHanRec', 1);
+  req.onsuccess = e => {
+    const db = e.target.result;
+    if(!db.objectStoreNames.contains('recordings')) return;
+    for(let n = 1; n <= 5; n++){
+      const tx = db.transaction('recordings','readonly');
+      const get = tx.objectStore('recordings').get('sentence' + n);
+      get.onsuccess = () => {
+        if(get.result){
+          const blob = get.result;
+          const url = URL.createObjectURL(blob);
+          recState[n] = {blob, url};
+          document.getElementById('mine' + n).disabled = false;
+          document.getElementById('dl' + n).disabled = false;
+          setStatus(n, '💾 Saved — ready to send');
+        }
+      };
+    }
+  };
+})();
+</script>
+</body>
+</html>
